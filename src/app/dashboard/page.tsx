@@ -43,8 +43,8 @@ export default function DashboardPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg">Загрузка...</div>
+      <div className="loading-page">
+        <div className="loading-text">Загрузка...</div>
       </div>
     );
   }
@@ -54,40 +54,43 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="dashboard-page">
       <Header />
       
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="dashboard-main">
         {/* Приветствие */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
+        <div className="dashboard-greeting">
+          <h1 className="greeting-title">
             Привет, {user.name || user.login} 👋
           </h1>
         </div>
 
-        {/* Основной контент */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Левая колонка - Заказы */}
-          <div className="lg:col-span-2">
-            <OrdersSlider />
+        {/* Основной контент - сетка 2x2 */}
+        <div className="dashboard-grid">
+          {/* Верхний ряд */}
+          <div className="dashboard-row">
+            {/* Заказы - левая часть (широкая) */}
+            <div className="orders-section">
+              <OrdersSlider />
+            </div>
+            
+            {/* Профиль - правая часть (узкая) */}
+            <div className="profile-section">
+              <ProfileBlock user={user} />
+            </div>
           </div>
 
-          {/* Правая колонка - Профиль */}
-          <div className="lg:col-span-1">
-            <ProfileBlock user={user} />
-          </div>
-        </div>
-
-        {/* Нижняя часть */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
-          {/* Трансляция */}
-          <div>
-            <BroadcastBlock />
-          </div>
-
-          {/* Платежи */}
-          <div>
-            <PaymentsBlock />
+          {/* Нижний ряд */}
+          <div className="dashboard-row">
+            {/* Трансляция - левая часть (широкая) */}
+            <div className="broadcast-section">
+              <BroadcastBlock />
+            </div>
+            
+            {/* Платежи - правая часть (узкая) */}
+            <div className="payments-section">
+              <PaymentsBlock />
+            </div>
           </div>
         </div>
       </main>

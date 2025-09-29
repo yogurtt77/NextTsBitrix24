@@ -51,26 +51,25 @@ export default function ProfileBlock({ user }: ProfileBlockProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6">
+    <div className="profile-card">
       {/* Заголовок */}
-      <div className="flex items-center mb-6">
-        <div className="w-1 h-8 bg-blue-500 mr-3"></div>
-        <h2 className="text-xl font-bold text-gray-900">Профиль</h2>
+      <div className="section-title">
+        <h2 className="section-title-text">Профиль</h2>
       </div>
 
-      <div className="space-y-6">
+      <div className="profile-content">
         {/* Аватар */}
-        <div className="flex justify-center">
-          <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center">
-            <span className="text-2xl text-gray-400">👤</span>
+        <div className="avatar-container">
+          <div className="avatar">
+            <span className="avatar-icon">👤</span>
           </div>
         </div>
 
         {/* Поля формы */}
-        <div className="space-y-4">
+        <div className="form-fields">
           {/* Имя */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+          <div className="form-field">
+            <label className="form-label">
               Имя
             </label>
             <input
@@ -78,31 +77,27 @@ export default function ProfileBlock({ user }: ProfileBlockProps) {
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
               disabled={!isEditing}
-              className={`w-full px-3 py-2 border rounded-lg focus:outline-none ${
-                isEditing 
-                  ? 'border-gray-300 focus:border-blue-500' 
-                  : 'border-gray-200 bg-gray-50'
-              }`}
+              className={`form-input ${isEditing ? 'editable' : 'disabled'}`}
               placeholder="Введите имя"
             />
           </div>
 
           {/* Email */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+          <div className="form-field">
+            <label className="form-label">
               Email
             </label>
             <input
               type="email"
               value={formData.email}
               disabled
-              className="w-full px-3 py-2 border border-gray-200 bg-gray-50 rounded-lg"
+              className="form-input disabled"
             />
           </div>
 
           {/* Телефон */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+          <div className="form-field">
+            <label className="form-label">
               Телефон
             </label>
             <input
@@ -110,18 +105,14 @@ export default function ProfileBlock({ user }: ProfileBlockProps) {
               value={formData.phone}
               onChange={(e) => handleInputChange('phone', e.target.value)}
               disabled={!isEditing}
-              className={`w-full px-3 py-2 border rounded-lg focus:outline-none ${
-                isEditing 
-                  ? 'border-gray-300 focus:border-blue-500' 
-                  : 'border-gray-200 bg-gray-50'
-              }`}
+              className={`form-input ${isEditing ? 'editable' : 'disabled'}`}
               placeholder="+7 (___) ___-__-__"
             />
           </div>
 
           {/* Адрес */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+          <div className="form-field">
+            <label className="form-label">
               Адрес
             </label>
             <input
@@ -129,11 +120,7 @@ export default function ProfileBlock({ user }: ProfileBlockProps) {
               value={formData.address}
               onChange={(e) => handleInputChange('address', e.target.value)}
               disabled={!isEditing}
-              className={`w-full px-3 py-2 border rounded-lg focus:outline-none ${
-                isEditing 
-                  ? 'border-gray-300 focus:border-blue-500' 
-                  : 'border-gray-200 bg-gray-50'
-              }`}
+              className={`form-input ${isEditing ? 'editable' : 'disabled'}`}
               placeholder="Введите адрес"
             />
           </div>
@@ -142,11 +129,7 @@ export default function ProfileBlock({ user }: ProfileBlockProps) {
         {/* Кнопка редактирования/сохранения */}
         <button
           onClick={isEditing ? handleSave : () => setIsEditing(true)}
-          className={`w-full py-2 px-4 rounded-lg font-medium transition-colors ${
-            isEditing
-              ? 'bg-green-500 hover:bg-green-600 text-white'
-              : 'bg-blue-500 hover:bg-blue-600 text-white'
-          }`}
+          className={`profile-button ${isEditing ? 'save' : 'edit'}`}
         >
           {isEditing ? 'Сохранить' : 'Редактировать'}
         </button>

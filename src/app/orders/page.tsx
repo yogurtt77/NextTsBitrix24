@@ -118,8 +118,8 @@ export default function OrdersPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg">Загрузка...</div>
+      <div className="loading-page">
+        <div className="loading-text">Загрузка...</div>
       </div>
     );
   }
@@ -129,42 +129,42 @@ export default function OrdersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="orders-page">
       <Header />
       
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="orders-main">
         {/* Заголовок */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Заказы</h1>
+        <div className="orders-header">
+          <h1 className="orders-title">Заказы</h1>
         </div>
 
         {/* Сетка заказов */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="orders-grid">
           {mockOrders.map((order) => (
             <div
               key={order.id}
-              className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow"
+              className="order-card"
             >
               {/* Статус */}
-              <div className="flex items-center mb-4">
-                <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
-                <span className="text-sm text-gray-600">Статус</span>
+              <div className="order-status">
+                <div className="status-dot"></div>
+                <span className="status-label">Статус</span>
               </div>
 
               {/* Детали услуги */}
-              <h3 className="text-lg font-bold text-gray-900 mb-2">
+              <h3 className="order-service">
                 {order.serviceDetails}
               </h3>
 
               {/* Дата заказа */}
-              <p className="text-sm text-gray-500 mb-6">
+              <p className="order-date">
                 {order.orderDate}
               </p>
 
               {/* Кнопка повторения заказа */}
               <button
                 onClick={() => handleRepeatOrder(order.id)}
-                className="w-full border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white py-2 px-4 rounded-lg font-medium transition-colors"
+                className="repeat-button"
               >
                 Повторить заказ
               </button>
@@ -173,21 +173,21 @@ export default function OrdersPage() {
         </div>
 
         {/* Пагинация (если нужно) */}
-        <div className="mt-12 flex justify-center">
-          <div className="flex space-x-2">
-            <button className="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50">
+        <div className="pagination">
+          <div className="pagination-buttons">
+            <button className="pagination-button">
               Предыдущая
             </button>
-            <button className="px-4 py-2 bg-blue-500 text-white rounded-lg">
+            <button className="pagination-button active">
               1
             </button>
-            <button className="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50">
+            <button className="pagination-button">
               2
             </button>
-            <button className="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50">
+            <button className="pagination-button">
               3
             </button>
-            <button className="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50">
+            <button className="pagination-button">
               Следующая
             </button>
           </div>

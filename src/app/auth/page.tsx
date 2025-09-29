@@ -147,99 +147,89 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex">
+    <div className="auth-page">
       {/* Левая часть - форма */}
-      <div className="w-full lg:w-2/5 flex items-center justify-center p-8">
-        <div className="w-full max-w-md">
+      <div className="auth-form-section">
+        <div className="auth-form-container">
           {/* Логотип */}
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-black mb-2">ЛОГОТИП</h1>
-            <h2 className="text-xl text-black">
+          <div className="auth-header">
+            <h1 className="auth-logo">ЛОГОТИП</h1>
+            <h2 className="auth-subtitle">
               {isLogin ? 'Вход' : 'Регистрация'}
             </h2>
           </div>
 
           {/* Форма */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="auth-form">
             {/* Email */}
-            <div>
-              <label className="block text-sm font-medium text-black mb-2">
+            <div className="form-group">
+              <label className="form-label">
                 Email
               </label>
-              <div className="relative">
+              <div className="input-container">
                 <input
                   type="email"
                   value={formData.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
-                  className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 ${
-                    errors.email ? 'border-red-500' : ''
-                  }`}
+                  className={`auth-input ${errors.email ? 'error' : ''}`}
                   placeholder="Email"
                 />
                 {errors.email && (
-                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                    <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-sm font-bold">!</span>
-                    </div>
+                  <div className="error-indicator">
+                    <div className="error-icon">!</div>
                   </div>
                 )}
               </div>
               {errors.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                <p className="error-message">{errors.email}</p>
               )}
             </div>
 
             {/* Логин (только для регистрации) */}
             {!isLogin && (
-              <div>
-                <label className="block text-sm font-medium text-black mb-2">
+              <div className="form-group">
+                <label className="form-label">
                   Логин
                 </label>
-                <div className="relative">
+                <div className="input-container">
                   <input
                     type="text"
                     value={formData.login}
                     onChange={(e) => handleInputChange('login', e.target.value)}
-                    className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 ${
-                      errors.login ? 'border-red-500' : ''
-                    }`}
+                    className={`auth-input ${errors.login ? 'error' : ''}`}
                     placeholder="Введите логин"
                   />
                   {errors.login && (
-                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                      <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
-                        <span className="text-white text-sm font-bold">!</span>
-                      </div>
+                    <div className="error-indicator">
+                      <div className="error-icon">!</div>
                     </div>
                   )}
                 </div>
                 {errors.login && (
-                  <p className="text-red-500 text-sm mt-1">{errors.login}</p>
+                  <p className="error-message">{errors.login}</p>
                 )}
               </div>
             )}
 
             {/* Пароль */}
-            <div>
-              <label className="block text-sm font-medium text-black mb-2">
+            <div className="form-group">
+              <label className="form-label">
                 Пароль
               </label>
-              <div className="relative">
+              <div className="input-container">
                 <input
                   type={showPassword ? "text" : "password"}
                   value={formData.password}
                   onChange={(e) => handleInputChange('password', e.target.value)}
-                  className={`w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 ${
-                    errors.password ? 'border-red-500' : ''
-                  }`}
+                  className={`auth-input password-input ${errors.password ? 'error' : ''}`}
                   placeholder="Пароль"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="password-toggle"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="password-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     {showPassword ? (
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
                     ) : (
@@ -248,51 +238,45 @@ export default function AuthPage() {
                   </svg>
                 </button>
                 {errors.password && (
-                  <div className="absolute right-10 top-1/2 transform -translate-y-1/2">
-                    <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-sm font-bold">!</span>
-                    </div>
+                  <div className="error-indicator password-error">
+                    <div className="error-icon">!</div>
                   </div>
                 )}
               </div>
               {errors.password && (
-                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+                <p className="error-message">{errors.password}</p>
               )}
             </div>
 
             {/* Подтверждение пароля (только для регистрации) */}
             {!isLogin && (
-              <div>
-                <label className="block text-sm font-medium text-black mb-2">
+              <div className="form-group">
+                <label className="form-label">
                   Подтверждение пароля
                 </label>
-                <div className="relative">
+                <div className="input-container">
                   <input
                     type="password"
                     value={formData.confirmPassword}
                     onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-                    className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 ${
-                      errors.confirmPassword ? 'border-red-500' : ''
-                    }`}
+                    className={`auth-input ${errors.confirmPassword ? 'error' : ''}`}
                     placeholder="Подтвердите пароль"
                   />
                   {errors.confirmPassword && (
-                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                      <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
-                        <span className="text-white text-sm font-bold">!</span>
-                      </div>
+                    <div className="error-indicator">
+                      <div className="error-icon">!</div>
                     </div>
                   )}
                 </div>
                 {errors.confirmPassword && (
-                  <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
+                  <p className="error-message">{errors.confirmPassword}</p>
                 )}
               </div>
             )}
 
             {/* Общая ошибка */}
             {errors.general && (
-              <div className="text-red-500 text-sm text-center">
+              <div className="general-error">
                 {errors.general}
               </div>
             )}
@@ -301,22 +285,18 @@ export default function AuthPage() {
             <button
               type="submit"
               disabled={!isFormValid() || isLoading}
-              className={`w-full py-3 px-4 rounded-lg font-medium transition-colors ${
-                isFormValid() && !isLoading
-                  ? 'bg-blue-500 hover:bg-blue-600 text-white'
-                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              }`}
+              className={`submit-button ${isFormValid() && !isLoading ? 'enabled' : 'disabled'}`}
             >
               {isLoading ? 'Загрузка...' : (isLogin ? 'Вход' : 'Регистрация')}
             </button>
 
             {/* Переключение между входом и регистрацией */}
-            <div className="text-center">
-              <span className="text-gray-500">или</span>
+            <div className="auth-switch">
+              <span className="switch-text">или</span>
               <button
                 type="button"
                 onClick={() => setIsLogin(!isLogin)}
-                className="block text-blue-500 hover:text-blue-600 mt-2 underline"
+                className="switch-button"
               >
                 {isLogin ? 'Регистрация' : 'Вход'}
               </button>
@@ -326,12 +306,12 @@ export default function AuthPage() {
       </div>
 
       {/* Правая часть - изображение Hyundai (скрывается на мобильных) */}
-      <div className="hidden lg:block lg:w-3/5 relative">
+      <div className="auth-image-section">
         <Image
           src="/images/hyundai.png"
           alt="Hyundai Santa Fe"
           fill
-          className="object-cover"
+          className="auth-image"
           priority
         />
       </div>

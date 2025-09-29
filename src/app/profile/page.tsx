@@ -99,8 +99,8 @@ export default function ProfilePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg">Загрузка...</div>
+      <div className="loading-page">
+        <div className="loading-text">Загрузка...</div>
       </div>
     );
   }
@@ -110,80 +110,72 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="profile-page">
       <Header />
       
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="profile-main">
         {/* Заголовок */}
-        <div className="mb-8">
-          <div className="flex items-center">
-            <div className="w-1 h-12 bg-blue-500 mr-4"></div>
-            <h1 className="text-3xl font-bold text-gray-900">Профиль</h1>
+        <div className="profile-header">
+          <div className="profile-title-section">
+            <div className="profile-title-bar"></div>
+            <h1 className="profile-title">Профиль</h1>
           </div>
         </div>
 
         {/* Основной контент */}
-        <div className="bg-white rounded-lg shadow-sm p-8">
-          <div className="flex flex-col lg:flex-row gap-8">
+        <div className="profile-content-card">
+          <div className="profile-layout">
             {/* Левая часть - Аватар */}
-            <div className="flex-shrink-0">
-              <div className="w-32 h-32 border-2 border-blue-200 rounded-full flex items-center justify-center bg-gray-50">
-                <span className="text-4xl text-gray-400">👤</span>
+            <div className="profile-avatar-section">
+              <div className="profile-avatar-large">
+                <span className="profile-avatar-icon">👤</span>
               </div>
             </div>
 
             {/* Правая часть - Форма */}
-            <div className="flex-1">
-              <div className="space-y-6">
+            <div className="profile-form-section">
+              <div className="profile-form-fields">
                 {/* Имя */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="profile-form-group">
+                  <label className="profile-form-label">
                     Имя
                   </label>
-                  <div className="relative">
+                  <div className="profile-input-container">
                     <input
                       type="text"
                       value={formData.name}
                       onChange={(e) => handleInputChange('name', e.target.value)}
                       disabled={!isEditing}
-                      className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none ${
-                        errors.name 
-                          ? 'border-red-500' 
-                          : isEditing 
-                            ? 'border-blue-300 focus:border-blue-500' 
-                            : 'border-gray-200 bg-gray-50'
-                      }`}
+                      className={`profile-form-input ${errors.name ? 'error' : ''} ${isEditing ? 'editable' : 'disabled'}`}
                       placeholder="Введите имя"
                     />
                     {errors.name && (
-                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                        <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
-                          <span className="text-white text-sm font-bold">!</span>
-                        </div>
+                      <div className="profile-error-indicator">
+                        <div className="profile-error-icon">!</div>
                       </div>
                     )}
                   </div>
                   {errors.name && (
-                    <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+                    <p className="profile-error-message">{errors.name}</p>
                   )}
                 </div>
 
                 {/* Email */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="profile-form-group">
+                  <label className="profile-form-label">
                     Email
                   </label>
                   <input
                     type="email"
                     value={formData.email}
                     disabled
-                    className="w-full px-4 py-3 border-2 border-gray-200 bg-gray-50 rounded-lg"
+                    className="profile-form-input disabled"
                   />
                 </div>
 
                 {/* Телефон */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="profile-form-group">
+                  <label className="profile-form-label">
                     Телефон
                   </label>
                   <input
@@ -191,18 +183,14 @@ export default function ProfilePage() {
                     value={formData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
                     disabled={!isEditing}
-                    className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none ${
-                      isEditing 
-                        ? 'border-blue-300 focus:border-blue-500' 
-                        : 'border-gray-200 bg-gray-50'
-                    }`}
+                    className={`profile-form-input ${isEditing ? 'editable' : 'disabled'}`}
                     placeholder="+7 (___) ___-__-__"
                   />
                 </div>
 
                 {/* Адрес */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="profile-form-group">
+                  <label className="profile-form-label">
                     Адрес
                   </label>
                   <input
@@ -210,18 +198,14 @@ export default function ProfilePage() {
                     value={formData.address}
                     onChange={(e) => handleInputChange('address', e.target.value)}
                     disabled={!isEditing}
-                    className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none ${
-                      isEditing 
-                        ? 'border-blue-300 focus:border-blue-500' 
-                        : 'border-gray-200 bg-gray-50'
-                    }`}
+                    className={`profile-form-input ${isEditing ? 'editable' : 'disabled'}`}
                     placeholder="Введите адрес"
                   />
                 </div>
 
                 {/* Общая ошибка */}
                 {errors.general && (
-                  <div className="text-red-500 text-sm">
+                  <div className="profile-general-error">
                     {errors.general}
                   </div>
                 )}
@@ -229,11 +213,7 @@ export default function ProfilePage() {
                 {/* Кнопка редактирования/сохранения */}
                 <button
                   onClick={isEditing ? handleSave : () => setIsEditing(true)}
-                  className={`w-full py-3 px-6 rounded-lg font-medium transition-colors ${
-                    isEditing
-                      ? 'bg-green-500 hover:bg-green-600 text-white'
-                      : 'bg-blue-500 hover:bg-blue-600 text-white'
-                  }`}
+                  className={`profile-save-button ${isEditing ? 'save' : 'edit'}`}
                 >
                   {isEditing ? 'Сохранить' : 'Редактировать'}
                 </button>

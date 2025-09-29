@@ -171,8 +171,8 @@ export default function PaymentsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg">Загрузка...</div>
+      <div className="loading-page">
+        <div className="loading-text">Загрузка...</div>
       </div>
     );
   }
@@ -182,75 +182,75 @@ export default function PaymentsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="payments-page">
       <Header />
       
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="payments-main">
         {/* Заголовок */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Платежи</h1>
+        <div className="payments-header">
+          <h1 className="payments-title">Платежи</h1>
         </div>
 
         {/* Таблица платежей */}
-        <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50">
+        <div className="payments-table-card">
+          <div className="payments-table-wrapper">
+            <table className="payments-table">
+              <thead className="payments-table-header">
                 <tr>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-blue-600">
+                  <th className="table-header">
                     Номер счета
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-blue-600">
+                  <th className="table-header">
                     Дата
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-blue-600">
+                  <th className="table-header">
                     Сумма
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-blue-600">
+                  <th className="table-header">
                     Статус
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-blue-600">
+                  <th className="table-header">
                     Действие
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="payments-table-body">
                 {payments.map((payment) => (
-                  <tr key={payment.id} className="hover:bg-gray-50">
+                  <tr key={payment.id} className="payments-table-row">
                     {/* Номер счета */}
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="table-cell">
                       {payment.accountNumber}
                     </td>
 
                     {/* Дата */}
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="table-cell">
                       {payment.date}
                     </td>
 
                     {/* Сумма */}
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="table-cell">
                       {payment.amount}
                     </td>
 
                     {/* Статус */}
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      <span className={getStatusColor(payment.status)}>
+                    <td className="table-cell">
+                      <span className={`status-text ${payment.status}`}>
                         {getStatusText(payment.status)}
                       </span>
                     </td>
 
                     {/* Действие */}
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                    <td className="table-cell">
                       {payment.status === 'unpaid' ? (
                         <button
                           onClick={() => handlePay(payment.id)}
                           disabled={isProcessing === payment.id}
-                          className="bg-black hover:bg-gray-800 text-white px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          className={`pay-button ${isProcessing === payment.id ? 'processing' : ''}`}
                         >
                           {isProcessing === payment.id ? 'Обработка...' : 'Оплатить'}
                         </button>
                       ) : (
-                        <span className="text-gray-400">—</span>
+                        <span className="no-action">—</span>
                       )}
                     </td>
                   </tr>
@@ -261,16 +261,16 @@ export default function PaymentsPage() {
         </div>
 
         {/* Информация о платежах */}
-        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <div className="flex items-start">
-            <div className="flex-shrink-0">
-              <div className="w-5 h-5 text-blue-400">ℹ️</div>
+        <div className="payments-info">
+          <div className="info-content">
+            <div className="info-icon">
+              <div className="info-emoji">ℹ️</div>
             </div>
-            <div className="ml-3">
-              <h3 className="text-sm font-medium text-blue-800">
+            <div className="info-text">
+              <h3 className="info-title">
                 Информация о платежах
               </h3>
-              <div className="mt-2 text-sm text-blue-700">
+              <div className="info-description">
                 <p>
                   • Статус "Оплачено" означает, что сделка находится на стадии "В работе" или выше
                 </p>

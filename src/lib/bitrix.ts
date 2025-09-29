@@ -16,6 +16,7 @@ export interface BitrixDeal {
   OPPORTUNITY: string;
   STAGE_ID: string;
   STAGE_SEMANTIC_ID: string;
+  CONTACT_ID?: string;
 }
 
 export interface CreateContactData {
@@ -74,9 +75,20 @@ export class BitrixAPI {
   // Получение всех сделок
   static async getDeals(): Promise<BitrixDeal[]> {
     const result = await this.makeRequest('crm.deal.list', {
-      select: ['ID', 'TITLE', 'DATE_CREATE', 'OPPORTUNITY', 'STAGE_ID', 'STAGE_SEMANTIC_ID'],
+      select: ['ID', 'TITLE', 'DATE_CREATE', 'OPPORTUNITY', 'STAGE_ID', 'STAGE_SEMANTIC_ID', 'CONTACT_ID'],
       filter: {},
       order: { DATE_CREATE: 'DESC' }
+    });
+    
+    return result.result;
+  }
+
+  // Получение всех контактов
+  static async getContacts(): Promise<BitrixContact[]> {
+    const result = await this.makeRequest('crm.contact.list', {
+      select: ['ID', 'NAME', 'LAST_NAME', 'EMAIL', 'PHONE'],
+      filter: {},
+      order: { ID: 'DESC' }
     });
     
     return result.result;

@@ -17,8 +17,8 @@ export default function HomePage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="text-lg">Перенаправление...</div>
+    <div className="redirect-page">
+      <div className="redirect-text">Перенаправление...</div>
     </div>
   );
 }
