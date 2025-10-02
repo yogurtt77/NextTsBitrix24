@@ -1,12 +1,11 @@
 @import 'variables';
-@import 'mixins';
 
 // Базовые стили
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  border: 1px solid red;
+//   border: 1px solid red;
 }
 
 html,
@@ -33,15 +32,32 @@ body {
 // Кастомные стили для Swiper
 .orders-swiper {
   width: 100%;
-  height: auto;
+  height: 310px;
+  cursor: grab;
   
-  .swiper-button-next,
-  .swiper-button-prev {
-    color: $primary-blue;
+  &:active {
+    cursor: grabbing;
   }
 
+  .swiper-pagination {
+    z-index: 100;
+    position: absolute;
+  }
+  
+  .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    background-color: $gray-300;
+    opacity: 1;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+  
   .swiper-pagination-bullet-active {
     background-color: $primary-blue;
+    width: 24px;
+    height: 12px;
+    border-radius: 6px;
   }
   
   .swiper-wrapper {
@@ -54,88 +70,224 @@ body {
 }
 
 // Адаптивные стили для Swiper
-@include mobile {
+@media (max-width: 639px) {
   .orders-swiper {
-    .swiper-button-next,
-    .swiper-button-prev {
-      display: none;
-    }
+    // Кнопки навигации убраны, оставляем только pagination
   }
 }
 
-// Стили для форм
-.form-input {
-  @include form-input;
-}
 
 // Стили для кнопок
 .btn-primary {
-  @include button-primary;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: $spacing-3 $spacing-6;
+  border-radius: $border-radius;
+  font-weight: 500;
+  transition: $transition-colors;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  background-color: $primary-blue;
+  color: $white;
+  
+  &:hover:not(:disabled) {
+    background-color: $primary-blue-hover;
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 .btn-secondary {
-  @include button-secondary;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: $spacing-2 $spacing-4;
+  border-radius: $border-radius;
+  font-weight: 500;
+  transition: $transition-colors;
+  cursor: pointer;
+  border: 2px solid $primary-blue;
+  color: $primary-blue;
+  background-color: transparent;
+  text-decoration: none;
+  
+  &:hover:not(:disabled) {
+    background-color: $primary-blue;
+    color: $white;
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 .btn-black {
-  @include button-black;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: $spacing-2 $spacing-4;
+  border-radius: $border-radius;
+  font-weight: 500;
+  transition: $transition-colors;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  background-color: $black;
+  color: $white;
+  
+  &:hover:not(:disabled) {
+    background-color: $gray-800;
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 // Стили для карточек
 .card {
-  @include card;
+  background-color: $white;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-sm;
+  padding: $spacing-6;
+  transition: $transition-shadow;
+  
+  &:hover {
+    box-shadow: $shadow-md;
+  }
 }
 
 // Стили для таблиц
 .table-header {
-  padding: $spacing-4 $spacing-6;
-  text-align: left;
+  padding: $spacing-2 4px;
+  text-align: center;
   font-size: $font-size-sm;
   font-weight: 500;
-  color: $primary-blue;
+  color: #2D3541;
+  
+  @media (min-width: 768px) {
+    padding: $spacing-4 0px;
+  }
 }
 
 .table-cell {
-  padding: $spacing-4 $spacing-6;
+  padding: $spacing-2 4px;
   white-space: nowrap;
   font-size: $font-size-sm;
   color: $gray-900;
+  
+  @media (min-width: 768px) {
+    padding: $spacing-4 0px;
+  }
 }
 
 // Анимации
 .fade-in {
-  @include fade-in;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 // Стили для индикаторов загрузки
 .loading-spinner {
-  @include loading-spinner;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid $white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 // Стили для уведомлений
 .notification {
-  @include notification;
+  position: fixed;
+  top: $spacing-4;
+  right: $spacing-4;
+  padding: $spacing-4;
+  border-radius: $border-radius;
+  box-shadow: $shadow-lg;
+  z-index: 50;
+  
+  &.success {
+    background-color: $green-500;
+    color: $white;
+  }
+  
+  &.error {
+    background-color: $red-500;
+    color: $white;
+  }
+  
+  &.info {
+    background-color: $primary-blue;
+    color: $white;
+  }
 }
 
 // Стили для модальных окон
 .modal-overlay {
-  @include modal-overlay;
+  position: fixed;
+  inset: 0;
+  background-color: rgba($black, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
 }
 
 .modal-content {
-  @include modal-content;
+  background-color: $white;
+  border-radius: $border-radius;
+  padding: $spacing-6;
+  max-width: 28rem;
+  width: 100%;
+  margin: $spacing-4;
 }
 
 // Стили для прогресс-баров
 .progress-bar {
-  @include progress-bar;
+  width: 100%;
+  background-color: $gray-200;
+  border-radius: 9999px;
+  height: 6px;
+  
+  @media (min-width: 768px) {
+    height: 8px;
+  }
 }
 
 .progress-fill {
-  @include progress-fill;
+  background-color: $green-500;
+  height: 6px;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+  
+  @media (min-width: 768px) {
+    height: 8px;
+  }
 }
 
 // Стили для статусов
@@ -148,27 +300,43 @@ body {
 }
 
 .status-indicator {
-  @include status-indicator;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  
+  &.paid {
+    background-color: $green-500;
+  }
+  
+  &.unpaid {
+    background-color: $red-500;
+  }
 }
 
-// Стили для навигации
-.nav-link {
-  @include nav-link;
-}
 
 // Стили для заголовков секций
 .section-title {
-  @include section-title;
+  display: flex;
+  align-items: center;
+  margin-bottom: $spacing-4;
+  
+  &::before {
+    content: '';
+    width: 4px;
+    height: 32px;
+    background-color: $primary-blue;
+    margin-right: $spacing-4;
+  }
 }
 
 .section-title-text {
-  font-size: $font-size-xl;
-  font-weight: 700;
+  font-size: $font-size-lg;
+  font-weight: 600;
   color: $gray-900;
 }
 
 // Адаптивные утилиты
-@include mobile {
+@media (max-width: 639px) {
   .mobile-hidden {
     display: none;
   }
@@ -186,7 +354,7 @@ body {
   }
 }
 
-@include desktop {
+@media (min-width: 768px) {
   .desktop-hidden {
     display: none;
   }
@@ -712,14 +880,6 @@ body {
   object-fit: cover;
 }
 
-.aspect-video {
-  aspect-ratio: 16 / 9;
-}
-
-.aspect-\[3\/4\] {
-  aspect-ratio: 3 / 4;
-}
-
 .w-1 {
   width: 4px;
 }
@@ -900,31 +1060,31 @@ body {
 }
 
 .lg\:col-span-1 {
-  @include large-desktop {
+  @media (min-width: 1024px) {
     grid-column: span 1 / span 1;
   }
 }
 
 .lg\:col-span-2 {
-  @include large-desktop {
+  @media (min-width: 1024px) {
     grid-column: span 2 / span 2;
   }
 }
 
 .lg\:grid-cols-2 {
-  @include large-desktop {
+  @media (min-width: 1024px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 .lg\:grid-cols-3 {
-  @include large-desktop {
+  @media (min-width: 1024px) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 .sm\:grid-cols-2 {
-  @include tablet {
+  @media (min-width: 640px) and (max-width: 767px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -953,57 +1113,57 @@ body {
 }
 
 .md\:hidden {
-  @include desktop {
+  @media (min-width: 768px) {
     display: none;
   }
 }
 
 .md\:flex {
-  @include desktop {
+  @media (min-width: 768px) {
     display: flex;
   }
 }
 
 .lg\:block {
-  @include large-desktop {
+  @media (min-width: 1024px) {
     display: block;
   }
 }
 
 .lg\:w-2\/5 {
-  @include large-desktop {
+  @media (min-width: 1024px) {
     width: 40%;
   }
 }
 
 .lg\:w-3\/5 {
-  @include large-desktop {
+  @media (min-width: 1024px) {
     width: 60%;
   }
 }
 
 .lg\:flex-row {
-  @include large-desktop {
+  @media (min-width: 1024px) {
     flex-direction: row;
   }
 }
 
 .lg\:flex-col {
-  @include large-desktop {
+  @media (min-width: 1024px) {
     flex-direction: column;
   }
 }
 
 // Responsive padding
 .sm\:px-6 {
-  @include tablet {
+  @media (min-width: 640px) and (max-width: 767px) {
     padding-left: $spacing-6;
     padding-right: $spacing-6;
   }
 }
 
 .lg\:px-8 {
-  @include large-desktop {
+  @media (min-width: 1024px) {
     padding-left: $spacing-8;
     padding-right: $spacing-8;
   }
@@ -1011,7 +1171,7 @@ body {
 
 // Responsive spacing
 .sm\:px-3 {
-  @include tablet {
+  @media (min-width: 640px) and (max-width: 767px) {
     padding-left: $spacing-3;
     padding-right: $spacing-3;
   }
@@ -1019,7 +1179,7 @@ body {
 
 // Responsive text
 .sm\:px-3 {
-  @include tablet {
+  @media (min-width: 640px) and (max-width: 767px) {
     padding-left: $spacing-3;
     padding-right: $spacing-3;
   }
@@ -1027,7 +1187,7 @@ body {
 
 // Responsive margins
 .sm\:px-3 {
-  @include tablet {
+  @media (min-width: 640px) and (max-width: 767px) {
     padding-left: $spacing-3;
     padding-right: $spacing-3;
   }
@@ -1083,17 +1243,21 @@ body {
 }
 
 .header-container {
-  max-width: 80rem;
   margin-left: auto;
   margin-right: auto;
   padding: $spacing-4 $spacing-8;
   
-  @include tablet {
+  @media (min-width: 640px) and (max-width: 767px) {
     padding-left: $spacing-6;
     padding-right: $spacing-6;
   }
+
+  @media (max-width: 768px) {
+    padding-right: 0;
+    padding-left: $spacing-4;
+  }
   
-  @include large-desktop {
+  @media (min-width: 1024px) {
     padding-left: $spacing-8;
     padding-right: $spacing-8;
   }
@@ -1112,89 +1276,38 @@ body {
   text-decoration: none;
 }
 
-.desktop-nav {
-  display: none;
+.header-nav {
+  display: flex;
   gap: 6px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   
-  @include desktop {
-    display: flex;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  
+  @media (min-width: 768px) {
+    overflow-x: visible;
   }
 }
 
 .nav-link {
-  @include nav-link;
-}
-
-.nav-icon {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-}
-
-.nav-text {
-  font-weight: 500;
-  font-size: $font-size-sm;
-  line-height: 130%;
-  font-weight: 500;
-}
-
-.mobile-menu-button {
-  @include desktop {
-    display: none;
-  }
-}
-
-.menu-toggle {
-  color: $gray-600;
-  background: none;
-  border: none;
-  cursor: pointer;
-  
-  &:hover {
-    color: $gray-900;
-  }
-  
-  &:focus {
-    outline: none;
-    color: $gray-900;
-  }
-}
-
-.menu-icon {
-  height: 24px;
-  width: 24px;
-}
-
-.mobile-nav {
-  @include desktop {
-    display: none;
-  }
-}
-
-.mobile-nav-content {
-  padding: $spacing-2 $spacing-2 $spacing-3;
-  background-color: $white;
-  border-top: 1px solid $gray-200;
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-1;
-  
-  @include tablet {
-    padding-left: $spacing-3;
-    padding-right: $spacing-3;
-  }
-}
-
-.mobile-nav-link {
   display: flex;
   align-items: center;
-  gap: $spacing-3;
+  gap: $spacing-2;
   padding: $spacing-2 $spacing-3;
   border-radius: $border-radius;
-  font-size: $font-size-base;
-  font-weight: 500;
   transition: $transition-colors;
+  flex-shrink: 0;
+  white-space: nowrap;
   text-decoration: none;
+  
+  @media (min-width: 768px) {
+    padding: $spacing-2 $spacing-4;
+  }
   
   &.active {
     background-color: $primary-blue;
@@ -1211,40 +1324,123 @@ body {
   }
 }
 
-.mobile-nav-icon {
-  width: 20px;
-  height: 20px;
+.nav-icon {
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
+  
+  @media (min-width: 768px) {
+    width: 20px;
+    height: 20px;
+  }
 }
 
-.mobile-nav-text {
-  // No additional styles needed
+.nav-text {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 130%;
+  
+  @media (min-width: 768px) {
+    font-size: $font-size-sm;
+  }
 }
+
+
 
 // Profile Block styles
 .profile-card {
-  @include card;
+  background-color: $white;
+  border-radius: $border-radius-lg;
+  padding: $spacing-4;
+  border: 1px solid $gray-200;
+//   height: 310px;
 }
 
 .profile-content {
   display: flex;
   flex-direction: column;
   gap: $spacing-6;
+  align-items: flex-start;
+  
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: $spacing-4;
+  }
 }
 
-.avatar-container {
+.profile-avatar-section {
+  flex-shrink: 0;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
+  
+  @media (min-width: 768px) {
+    justify-content: center;
+  }
 }
 
-.avatar {
-  width: 80px;
-  height: 80px;
-  background-color: $gray-200;
+.profile-avatar {
+  width: 95px;
+  height: 95px;
   border-radius: 50%;
+  background-color: $white;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 2px solid $primary-blue;
+}
+
+.profile-avatar-icon {
+}
+
+.profile-form-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-4;
+  width: 100%;
+  
+  @media (min-width: 768px) {
+    gap: $spacing-3;
+  }
+}
+
+.profile-form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+
+
+.profile-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: $spacing-6;
+  padding-top: $spacing-4;
+  border-top: 1px solid $gray-200;
+}
+
+.profile-save-button {
+    width: 100%;
+  background-color: $primary-blue;
+  color: $white;
+  padding: $spacing-3 $spacing-6;
+  border-radius: $border-radius;
+  font-weight: 500;
+  transition: $transition-colors;
+  border: none;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: $primary-blue-hover;
+  }
+  
+  &:active {
+    transform: translateY(1px);
+  }
 }
 
 .avatar-icon {
@@ -1271,7 +1467,26 @@ body {
 }
 
 .form-input {
-  @include form-input;
+  width: 100%;
+  padding: $spacing-3 $spacing-4;
+  border: 2px solid $gray-300;
+  border-radius: $border-radius;
+  outline: none;
+  transition: $transition-colors;
+  
+  &:focus {
+    border-color: $primary-blue;
+  }
+  
+  &:disabled {
+    border-color: $gray-200;
+    background-color: $gray-50;
+    cursor: not-allowed;
+  }
+  
+  &.error {
+    border-color: $red-500;
+  }
   
   &.editable {
     border-color: $gray-300;
@@ -1317,28 +1532,36 @@ body {
 
 // Orders Slider styles
 .orders-card {
-  @include card;
+  background-color: $white;
+  border-radius: $border-radius-lg;
+  padding: $spacing-4;
+  border: 1px solid $gray-200;
+  margin-bottom: 40px; // Отступ для пагинации
+  height: auto;
+  width: 100%;
 }
 
 .order-item {
   background-color: $white;
   border: 1px solid $gray-200;
-  border-radius: $border-radius;
-  padding: $spacing-4;
-  box-shadow: $shadow-sm;
-  transition: $transition-shadow;
+  border-radius: $border-radius-lg;
+  padding: $spacing-3;
   width: 100%;
-  height: 100%;
+  height: 270px;
   display: flex;
   flex-direction: column;
-  
-  &:hover {
-    box-shadow: $shadow-md;
-  }
+  justify-content: space-between;
+}
+
+.order-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .order-image {
-  aspect-ratio: 3 / 4;
+  width: 100%;
+  height: auto;
   border-radius: $border-radius;
   margin-bottom: $spacing-4;
   overflow: hidden;
@@ -1353,16 +1576,18 @@ body {
 .order-title {
   font-weight: 500;
   color: $gray-900;
-  margin-bottom: $spacing-3;
   font-size: $font-size-sm;
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
 }
 
 .download-button {
   width: 100%;
   background-color: $primary-blue;
   color: $white;
-  padding: $spacing-2 $spacing-4;
-  border-radius: $border-radius;
+  padding: 8px 70px;
+  border-radius: $border-radius-lg;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1370,6 +1595,8 @@ body {
   transition: $transition-colors;
   border: none;
   cursor: pointer;
+  margin-top: auto;
+  flex-shrink: 0;
   
   &:hover {
     background-color: $primary-blue-hover;
@@ -1386,14 +1613,30 @@ body {
 
 // Payments Block styles
 .payments-card {
-  @include card;
+  background-color: $white;
+  border-radius: $border-radius-lg;
+  padding: $spacing-3;
+  border: 1px solid $gray-200;
+  
+  @media (min-width: 768px) {
+    padding: $spacing-4;
+  }
 }
 
 .payments-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: $spacing-6;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+}
+
+.payments-title {
+  font-size: 48px;
+  font-weight: 500;
+  line-height: 130%;
+  color: $gray-900;
 }
 
 .payments-title-section {
@@ -1401,16 +1644,97 @@ body {
   align-items: center;
 }
 
-.period-select {
+// Кастомный выпадающий список
+.custom-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-2 $spacing-3;
   border: 1px solid $gray-300;
   border-radius: $border-radius;
-  padding: $spacing-2 $spacing-3;
+  background-color: $white;
   font-size: $font-size-sm;
-  outline: none;
+  color: $gray-700;
+  cursor: pointer;
   transition: $transition-colors;
+  min-width: 200px;
+  
+  &:hover {
+    border-color: $gray-400;
+  }
   
   &:focus {
+    outline: none;
     border-color: $primary-blue;
+  }
+}
+
+.dropdown-text {
+  flex: 1;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown-arrow {
+  margin-left: $spacing-2;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+  
+  &.open {
+    transform: rotate(180deg);
+  }
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: $white;
+  border: 1px solid $gray-300;
+  border-radius: $border-radius;
+  box-shadow: $shadow-lg;
+  z-index: 50;
+  margin-top: 2px;
+  overflow: hidden;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: $spacing-3;
+  text-align: left;
+  font-size: $font-size-sm;
+  color: $gray-700;
+  background-color: $white;
+  border: none;
+  cursor: pointer;
+  transition: $transition-colors;
+  
+  &:hover {
+    background-color: $gray-50;
+  }
+  
+  &.selected {
+    background-color: $primary-blue;
+    color: $white;
+  }
+  
+  &:first-child {
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+  }
+  
+  &:last-child {
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
   }
 }
 
@@ -1433,22 +1757,32 @@ body {
 .employee-info {
   display: flex;
   align-items: center;
-  gap: $spacing-3;
+  gap: $spacing-2;
+  
+  @media (min-width: 768px) {
+    gap: $spacing-3;
+  }
 }
 
 .employee-avatar {
-  width: 32px;
-  height: 32px;
-  background-color: $gray-200;
+  width: 35px;
+  height: 35px;
+  border: 1px solid $primary-blue;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  
+  @media (min-width: 768px) {
+    width: 43px;
+    height: 43px;
+  }
 }
 
-.employee-icon {
-  font-size: $font-size-sm;
-  color: $gray-600;
+.employee-img {
+
+  
 }
 
 .employee-details {
@@ -1468,11 +1802,32 @@ body {
 .status-info {
   display: flex;
   align-items: center;
-  gap: $spacing-2;
+  gap: $spacing-1;
+  
+  @media (min-width: 768px) {
+    gap: $spacing-1;
+  }
 }
 
 .status-text {
   font-size: $font-size-sm;
+  padding: 3px 6px;
+  border-radius: 12px;
+  font-weight: 500;
+
+  @media (min-width: 768px) {
+    padding: 4px 8px;
+  }
+
+  &.paid {
+    color: $green-500;
+    background-color: rgba(34, 197, 94, 0.1);
+  }
+  
+  &.unpaid {
+    color: $red-500;
+    background-color: rgba(239, 68, 68, 0.1);
+  }
 }
 
 .progress-container {
@@ -1493,6 +1848,8 @@ body {
   border: none;
   cursor: pointer;
   transition: $transition-colors;
+  text-align: center;
+  width: 100%;
   
   &:hover {
     color: $primary-blue-hover;
@@ -1501,7 +1858,11 @@ body {
 
 // Broadcast Block styles
 .broadcast-card {
-  @include card;
+  background-color: $white;
+  border-radius: $border-radius-lg;
+  padding: $spacing-4;
+  border: 1px solid $gray-200;
+  
 }
 
 .broadcast-header {
@@ -1543,71 +1904,25 @@ body {
 
 .broadcast-video {
   position: relative;
-  aspect-ratio: 16 / 9;
   background-color: $gray-100;
   border-radius: $border-radius;
   overflow: hidden;
 }
 
-.broadcast-placeholder {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
+
+
+
+.broadcast-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.broadcast-content {
-  text-align: center;
-  color: $gray-400;
-}
 
-.broadcast-icon {
-  font-size: 60px;
-  margin-bottom: $spacing-4;
-}
 
-.broadcast-title {
-  font-size: $font-size-lg;
-  font-weight: 500;
-}
 
-.broadcast-subtitle {
-  font-size: $font-size-sm;
-}
 
-.live-indicator {
-  position: absolute;
-  top: $spacing-4;
-  left: $spacing-4;
-  background-color: $red-500;
-  color: $white;
-  padding: $spacing-1 $spacing-3;
-  border-radius: 9999px;
-  font-size: $font-size-sm;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: $spacing-2;
-}
-
-.live-dot {
-  width: 8px;
-  height: 8px;
-  background-color: $white;
-  border-radius: 50%;
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-.live-label {
-  // No additional styles needed
-}
-
-.broadcast-description {
-  margin-top: $spacing-4;
-  font-size: $font-size-sm;
-  color: $gray-600;
-}
 
 // Dashboard styles
 .loading-page {
@@ -1628,19 +1943,18 @@ body {
 }
 
 .dashboard-main {
-//   max-width: 80rem;
   margin-left: auto;
   margin-right: auto;
   padding: $spacing-4 $spacing-4 $spacing-8;
   width: 100%;
   overflow-x: hidden;
   
-  @include tablet {
+  @media (min-width: 640px) and (max-width: 767px) {
     padding-left: $spacing-6;
     padding-right: $spacing-6;
   }
   
-  @include large-desktop {
+  @media (min-width: 1024px) {
     padding-left: $spacing-8;
     padding-right: $spacing-8;
   }
@@ -1662,7 +1976,7 @@ body {
   gap: $spacing-8;
   width: 100%;
   
-  @include large-desktop {
+  @media (min-width: 1024px) {
     gap: $spacing-6;
   }
 }
@@ -1673,7 +1987,7 @@ body {
   gap: $spacing-6;
   width: 100%;
   
-  @include large-desktop {
+  @media (min-width: 1024px) {
     flex-direction: row;
     gap: $spacing-6;
   }
@@ -1685,7 +1999,7 @@ body {
   min-width: 0; // Предотвращает переполнение
   max-width: 100%;
   
-  @include large-desktop {
+  @media (min-width: 1024px) {
     flex: 2; // Широкая колонка (2/3)
   }
 }
@@ -1696,7 +2010,7 @@ body {
   min-width: 0; // Предотвращает переполнение
   max-width: 100%;
   
-  @include large-desktop {
+  @media (min-width: 1024px) {
     flex: 1; // Узкая колонка (1/3)
   }
 }
@@ -1707,8 +2021,8 @@ body {
   min-width: 0; // Предотвращает переполнение
   max-width: 100%;
   
-  @include large-desktop {
-    flex: 2; // Широкая колонка (2/3)
+  @media (min-width: 1024px) {
+    flex: 1; // Узкая колонка (1/3)
   }
 }
 
@@ -1718,8 +2032,8 @@ body {
   min-width: 0; // Предотвращает переполнение
   max-width: 100%;
   
-  @include large-desktop {
-    flex: 1; // Узкая колонка (1/3)
+  @media (min-width: 1024px) {
+    flex: 2; // Широкая колонка (2/3)
   }
 }
 
@@ -1738,7 +2052,7 @@ body {
   justify-content: center;
   padding: $spacing-8;
   
-  @include large-desktop {
+  @media (min-width: 1024px) {
     width: 40%;
   }
 }
@@ -1763,6 +2077,7 @@ body {
 .auth-subtitle {
   font-size: $font-size-xl;
   color: $black;
+  
 }
 
 .auth-form {
@@ -1882,6 +2197,10 @@ body {
 }
 
 .auth-switch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
 }
 
@@ -1890,14 +2209,16 @@ body {
 }
 
 .switch-button {
-  display: block;
+  align-items: center;
+  justify-content: center;
   color: $primary-blue;
-  margin-top: $spacing-2;
+  margin-top: $spacing-4;
   background: none;
   border: none;
   cursor: pointer;
   text-decoration: underline;
   transition: $transition-colors;
+
   
   &:hover {
     color: $primary-blue-hover;
@@ -1908,7 +2229,7 @@ body {
   display: none;
   position: relative;
   
-  @include large-desktop {
+  @media (min-width: 1024px) {
     display: block;
     width: 60%;
   }
@@ -1925,17 +2246,16 @@ body {
 }
 
 .orders-main {
-  max-width: 80rem;
   margin-left: auto;
   margin-right: auto;
   padding: $spacing-4 $spacing-4 $spacing-8;
   
-  @include tablet {
+  @media (min-width: 640px) and (max-width: 767px) {
     padding-left: $spacing-6;
     padding-right: $spacing-6;
   }
   
-  @include large-desktop {
+  @media (min-width: 1024px) {
     padding-left: $spacing-8;
     padding-right: $spacing-8;
   }
@@ -1946,21 +2266,22 @@ body {
 }
 
 .orders-title {
-  font-size: $font-size-3xl;
-  font-weight: 700;
+  font-size: 48px;
+  font-weight: 500;
+  line-height: 130%;
   color: $gray-900;
 }
 
 .orders-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: $spacing-6;
+  gap: $spacing-8;
   
-  @include tablet {
+  @media (min-width: 640px) and (max-width: 767px) {
     grid-template-columns: repeat(2, 1fr);
   }
   
-  @include large-desktop {
+  @media (min-width: 1024px) {
     grid-template-columns: repeat(3, 1fr);
   }
   
@@ -1971,7 +2292,7 @@ body {
 
 .order-card {
   background-color: $white;
-  border-radius: $border-radius;
+  border-radius: 6px;
   box-shadow: $shadow-sm;
   padding: $spacing-6;
   transition: $transition-shadow;
@@ -1984,41 +2305,47 @@ body {
 .order-status {
   display: flex;
   align-items: center;
-  margin-bottom: $spacing-4;
+  margin-bottom: 12px;
 }
 
 .status-dot {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   background-color: $primary-blue;
   border-radius: 50%;
-  margin-right: $spacing-2;
+  margin-right: 10px;
 }
 
 .status-label {
-  font-size: $font-size-sm;
-  color: $gray-600;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 130%;
 }
 
 .order-service {
-  font-size: $font-size-lg;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 400;
   color: $gray-900;
-  margin-bottom: $spacing-2;
+  margin-bottom: 12px;
 }
 
 .order-date {
-  font-size: $font-size-sm;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 130%;
   color: $gray-500;
-  margin-bottom: $spacing-6;
+  margin-bottom: 12px;
 }
 
 .repeat-button {
   width: 100%;
-  border: 2px solid $primary-blue;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 130%;
+  border: 1px solid $primary-blue;
   color: $primary-blue;
   background-color: transparent;
-  padding: $spacing-2 $spacing-4;
+  padding: $spacing-3;
   border-radius: $border-radius;
   font-weight: 500;
   transition: $transition-colors;
@@ -2030,91 +2357,121 @@ body {
   }
 }
 
-.pagination {
-  margin-top: $spacing-12;
-  display: flex;
-  justify-content: center;
-}
-
-.pagination-buttons {
-  display: flex;
-  gap: $spacing-2;
-}
-
-.pagination-button {
-  padding: $spacing-2 $spacing-4;
-  border: 1px solid $gray-300;
-  border-radius: $border-radius;
-  color: $gray-600;
-  background-color: $white;
-  transition: $transition-colors;
-  cursor: pointer;
-  
-  &:hover {
-    background-color: $gray-50;
-  }
-  
-  &.active {
-    background-color: $primary-blue;
-    color: $white;
-    border-color: $primary-blue;
-  }
-}
 
 // Payments page styles
 .payments-page {
   min-height: 100vh;
-  background-color: $gray-50;
+  background-color: #F5F5F5;
+  margin: 0;
+  padding: 0;
 }
 
 .payments-main {
-  max-width: 80rem;
-  margin-left: auto;
-  margin-right: auto;
-  padding: $spacing-4 $spacing-4 $spacing-8;
-  
-  @include tablet {
-    padding-left: $spacing-6;
-    padding-right: $spacing-6;
-  }
-  
-  @include large-desktop {
-    padding-left: $spacing-8;
-    padding-right: $spacing-8;
-  }
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #F5F5F5;
 }
 
-.payments-header {
-  margin-bottom: $spacing-8;
-}
-
-.payments-title {
-  font-size: $font-size-3xl;
-  font-weight: 700;
-  color: $gray-900;
-}
 
 .payments-table-card {
   background-color: $white;
-  border-radius: $border-radius;
-  box-shadow: $shadow-sm;
-  overflow: hidden;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .payments-table-wrapper {
+  width: 100%;
   overflow-x: auto;
 }
 
 .payments-table {
   width: 100%;
+  border-collapse: collapse;
 }
 
 .payments-table-header {
-  background-color: $gray-50;
+  background-color: $white;
 }
 
 .payments-table-body {
-  // No additional styles needed
+  background-color: $white;
+}
+
+// Новые стили для заголовков таблицы платежей
+.payments-table-header-cell {
+  text-align: left;
+  font-size: 14px;
+  font-weight: 500;
+  color: #3B82F6;
+  background-color: $white;
+  border-bottom: 1px solid #E5E7EB;
+  padding: 16px 24px;
+}
+
+// Стили для строк таблицы платежей
+.payments-table-row {
+  border-bottom: 1px solid #E5E7EB;
+  transition: none;
+  
+  &:hover {
+    background-color: $white;
+  }
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+// Стили для ячеек таблицы платежей
+.payments-table-cell {
+  font-size: 14px;
+  color: $gray-900;
+  background-color: $white;
+  padding: 16px 24px;
+  vertical-align: middle;
+}
+
+// Стили для статуса
+.payments-status-text {
+  font-size: 14px;
+  
+  &.paid {
+    color: #3B82F6;
+  }
+  
+  &.unpaid {
+    color: $gray-900;
+  }
+}
+
+// Стили для кнопки оплаты
+.payments-pay-button {
+  background-color: $gray-900;
+  color: $white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  
+  &:hover {
+    background-color: #374151;
+  }
+  
+  &:disabled {
+    background-color: $gray-400;
+    cursor: not-allowed;
+  }
+}
+
+// Стиль для пустого действия
+.payments-no-action {
+  color: $gray-400;
+  font-size: 14px;
 }
 
 .loading-container {
@@ -2143,15 +2500,7 @@ body {
   }
 }
 
-.status-text {
-  &.paid {
-    color: $primary-blue;
-  }
-  
-  &.unpaid {
-    color: $black;
-  }
-}
+
 
 .pay-button {
   background-color: $black;
@@ -2219,24 +2568,11 @@ body {
 // Profile page styles
 .profile-page {
   min-height: 100vh;
-  background-color: $gray-50;
 }
 
 .profile-main {
-  max-width: 56rem;
-  margin-left: auto;
-  margin-right: auto;
-  padding: $spacing-4 $spacing-4 $spacing-8;
-  
-  @include tablet {
-    padding-left: $spacing-6;
-    padding-right: $spacing-6;
-  }
-  
-  @include large-desktop {
-    padding-left: $spacing-8;
-    padding-right: $spacing-8;
-  }
+  margin: 0 auto;
+  padding: $spacing-8;
 }
 
 .profile-header {
@@ -2250,57 +2586,50 @@ body {
 
 .profile-title-bar {
   width: 4px;
-  height: 48px;
-  background-color: $primary-blue;
+  height: 40px;
+  background-color: #3B82F6;
   margin-right: $spacing-4;
 }
 
 .profile-title {
-  font-size: $font-size-3xl;
+  font-size: 32px;
   font-weight: 700;
   color: $gray-900;
+  margin: 0;
 }
 
 .profile-content-card {
   background-color: $white;
-  border-radius: $border-radius;
-  box-shadow: $shadow-sm;
-  padding: $spacing-8;
+  border-radius: 8px;
 }
 
 .profile-layout {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: $spacing-8;
-  
-  @include large-desktop {
-    flex-direction: row;
-  }
+  align-items: flex-start;
 }
 
-.profile-avatar-section {
-  flex-shrink: 0;
-}
+
 
 .profile-avatar-large {
-  width: 128px;
-  height: 128px;
-  border: 2px solid $primary-blue-light;
+  width: 200px;
+  height: 200px;
+  border: 2px solid $primary-blue;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $gray-50;
+  overflow: hidden;
 }
 
-.profile-avatar-icon {
-  font-size: 36px;
-  color: $gray-400;
+.profile-avatar-img {
+  object-fit: contain;
+  opacity: 0.6;
 }
 
-.profile-form-section {
-  flex: 1;
-}
+
+
 
 .profile-form-fields {
   display: flex;
@@ -2309,15 +2638,21 @@ body {
 }
 
 .profile-form-group {
-  // No additional styles needed
+  display: flex;
+  flex-direction: column;
 }
 
 .profile-form-label {
   display: block;
-  font-size: $font-size-sm;
-  font-weight: 500;
-  color: $gray-700;
+  font-size: 14px;
+  font-weight: 600;
+  color: $gray-900;
   margin-bottom: $spacing-2;
+  
+  @media (min-width: 768px) {
+    font-size: 16px;
+    margin-bottom: $spacing-3;
+  }
 }
 
 .profile-input-container {
@@ -2326,31 +2661,39 @@ body {
 
 .profile-form-input {
   width: 100%;
-  padding: $spacing-3 $spacing-4;
-  border: 2px solid $gray-300;
-  border-radius: $border-radius;
+  max-width: 700px;
+  padding: 12px 16px;
+  border: 1px solid #D1D5DB;
+  border-radius: 6px;
   outline: none;
-  transition: $transition-colors;
+  font-size: 14px;
+  transition: border-color 0.2s;
+  
+  @media (min-width: 768px) {
+    padding: 14px 16px;
+  }
   
   &:focus {
-    border-color: $primary-blue;
+    border-color: #3B82F6;
   }
   
   &.error {
-    border-color: $red-500;
-  }
-  
-  &.editable {
-    border-color: $primary-blue-light;
-    
-    &:focus {
-      border-color: $primary-blue;
-    }
+    border-color: #EF4444;
   }
   
   &.disabled {
-    border-color: $gray-200;
-    background-color: $gray-50;
+    background-color: $white;
+    color: $gray-500;
+    cursor: not-allowed;
+  }
+  
+  &.editable {
+    background-color: $white;
+    color: $gray-900;
+  }
+  
+  &::placeholder {
+    color: #9CA3AF;
   }
 }
 
@@ -2375,9 +2718,10 @@ body {
 }
 
 .profile-error-message {
-  color: $red-500;
-  font-size: $font-size-sm;
-  margin-top: $spacing-1;
+  color: #EF4444;
+  font-size: 14px;
+  margin-top: 4px;
+  margin-bottom: 0;
 }
 
 .profile-general-error {
@@ -2386,32 +2730,35 @@ body {
 }
 
 .profile-save-button {
-  width: 100%;
-  padding: $spacing-3 $spacing-6;
-  border-radius: $border-radius;
-  font-weight: 500;
-  transition: $transition-colors;
+  background-color: #3B82F6;
+  color: $white;
   border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
+  transition: background-color 0.2s;
+  max-width: 700px;
+  
+  &:hover {
+    background-color: #2563EB;
+  }
   
   &.edit {
-    background-color: $primary-blue;
-    color: $white;
-    
-    &:hover {
-      background-color: $primary-blue-hover;
-    }
+    background-color: #3B82F6;
   }
   
   &.save {
-    background-color: $green-500;
-    color: $white;
+    background-color: #10B981;
     
     &:hover {
-      background-color: $green-600;
+      background-color: #059669;
     }
   }
 }
+
+
 
 // Redirect page styles
 .redirect-page {

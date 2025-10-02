@@ -17,12 +17,21 @@ interface ProfileBlockProps {
 
 export default function ProfileBlock({ user }: ProfileBlockProps) {
   const [isEditing, setIsEditing] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
   const [formData, setFormData] = useState({
     name: user.name || '',
     email: user.email,
     phone: user.phone || '',
     address: user.address || ''
   });
+  
+  // Исходные данные для сравнения
+  const originalData = {
+    name: user.name || '',
+    email: user.email,
+    phone: user.phone || '',
+    address: user.address || ''
+  };
 
   const handleSave = async () => {
     try {
@@ -38,6 +47,7 @@ export default function ProfileBlock({ user }: ProfileBlockProps) {
         const data = await response.json();
         // Обновляем данные в localStorage
         localStorage.setItem('user', JSON.stringify(data.user));
+        setHasChanges(false);
         setIsEditing(false);
         // Можно добавить уведомление об успешном сохранении
       }
@@ -48,6 +58,18 @@ export default function ProfileBlock({ user }: ProfileBlockProps) {
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    
+    // Проверяем, есть ли изменения
+    const newData = { ...formData, [field]: value };
+    const hasChangesNow = Object.keys(newData).some(key => 
+      newData[key as keyof typeof newData] !== originalData[key as keyof typeof originalData]
+    );
+    setHasChanges(hasChangesNow);
+    
+    // Если есть изменения, включаем режим редактирования
+    if (hasChangesNow && !isEditing) {
+      setIsEditing(true);
+    }
   };
 
   return (
@@ -58,82 +80,86 @@ export default function ProfileBlock({ user }: ProfileBlockProps) {
       </div>
 
       <div className="profile-content">
-        {/* Аватар */}
-        <div className="avatar-container">
-          <div className="avatar">
-            <span className="avatar-icon">👤</span>
+        {/* Аватар - левая часть */}
+        <div className="profile-avatar-section">
+          <div className="profile-avatar">
+            <img src="/avatar.svg" alt="Avatar" className="profile-avatar-icon" />
           </div>
         </div>
 
-        {/* Поля формы */}
-        <div className="form-fields">
+        {/* Формы - правая часть */}
+        <div className="profile-form-section">
           {/* Имя */}
-          <div className="form-field">
-            <label className="form-label">
+          <div className="profile-form-field">
+          <label className="profile-form-label">
               Имя
             </label>
             <input
               type="text"
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
-              disabled={!isEditing}
-              className={`form-input ${isEditing ? 'editable' : 'disabled'}`}
+              // disabled={!isEditing}
+              className={`profile-form-input ${isEditing ? 'editable' : 'disabled'}`}
               placeholder="Введите имя"
             />
           </div>
 
           {/* Email */}
-          <div className="form-field">
-            <label className="form-label">
+          <div className="profile-form-field">
+            <label className="profile-form-label">
               Email
             </label>
             <input
               type="email"
               value={formData.email}
               disabled
-              className="form-input disabled"
+              className="profile-form-input disabled"
             />
           </div>
 
           {/* Телефон */}
-          <div className="form-field">
-            <label className="form-label">
+          <div className="profile-form-field">
+            <label className="profile-form-label">
               Телефон
             </label>
             <input
               type="tel"
               value={formData.phone}
               onChange={(e) => handleInputChange('phone', e.target.value)}
-              disabled={!isEditing}
-              className={`form-input ${isEditing ? 'editable' : 'disabled'}`}
+              // disabled={!isEditing}
+              className={`profile-form-input ${isEditing ? 'editable' : 'disabled'}`}
               placeholder="+7 (___) ___-__-__"
             />
           </div>
 
           {/* Адрес */}
-          <div className="form-field">
-            <label className="form-label">
+          <div className="profile-form-field">
+            <label className="profile-form-label">
               Адрес
             </label>
             <input
               type="text"
               value={formData.address}
               onChange={(e) => handleInputChange('address', e.target.value)}
-              disabled={!isEditing}
-              className={`form-input ${isEditing ? 'editable' : 'disabled'}`}
-              placeholder="Введите адрес"
+              // disabled={!isEditing}
+              className={`profile-form-input ${isEditing ? 'editable' : 'disabled'}`}
+              placeholder="Адрес"
             />
           </div>
         </div>
-
-        {/* Кнопка редактирования/сохранения */}
-        <button
-          onClick={isEditing ? handleSave : () => setIsEditing(true)}
-          className={`profile-button ${isEditing ? 'save' : 'edit'}`}
-        >
-          {isEditing ? 'Сохранить' : 'Редактировать'}
-        </button>
       </div>
+
+      {/* Кнопка сохранения - показывается только при изменениях */}
+      {hasChanges && (
+        <div className="profile-actions">
+          <button
+            onClick={handleSave}
+            className="profile-save-button"
+          >
+            Сохранить
+          </button>
+        </div>
+      )}
     </div>
   );
 }

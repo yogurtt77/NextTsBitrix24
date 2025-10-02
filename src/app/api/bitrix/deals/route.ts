@@ -15,8 +15,9 @@ export async function GET(request: NextRequest) {
     // Преобразуем данные в формат для таблицы платежей
     const payments = deals.map(deal => {
       // Согласно ТЗ: статус "оплачен" только когда сделка в стадии "В работе" и выше
-      // Стадия "В работе" обычно имеет STAGE_ID = "PREPARATION" или содержит "работа"
-      const isPaid = deal.STAGE_ID === 'PREPARATION' || 
+      // Стадия "В работе" имеет STAGE_ID = "EXECUTING" или содержит "работа"
+      const isPaid = deal.STAGE_ID === 'EXECUTING' || 
+                     deal.STAGE_ID.includes('EXECUTING') ||
                      deal.STAGE_ID.includes('работа') || 
                      deal.STAGE_ID.includes('WORK') ||
                      deal.STAGE_SEMANTIC_ID === 'W'; // Выиграна

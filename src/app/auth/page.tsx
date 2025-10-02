@@ -112,9 +112,10 @@ export default function AuthPage() {
         // Обрабатываем ошибки валидации
         if (data.error.includes('занято')) {
           if (data.error.includes('пользователя')) {
-            setErrors({ login: data.error });
+            setErrors({ login: 'Это имя пользователя уже занято!' });
           } else if (data.error.includes('письмо')) {
             setErrors({ email: data.error });
+
           }
         } else {
           setErrors({ general: data.error });
@@ -142,8 +143,7 @@ export default function AuthPage() {
     return formData.login.trim() && 
            formData.email.trim() && 
            formData.password && 
-           formData.confirmPassword &&
-           formData.password === formData.confirmPassword;
+           formData.confirmPassword;
   };
 
   return (
@@ -246,6 +246,9 @@ export default function AuthPage() {
               {errors.password && (
                 <p className="error-message">{errors.password}</p>
               )}
+              {errors.confirmPassword && (
+                <p className="error-message">{errors.confirmPassword}</p>
+              )}
             </div>
 
             {/* Подтверждение пароля (только для регистрации) */}
@@ -271,6 +274,9 @@ export default function AuthPage() {
                 {errors.confirmPassword && (
                   <p className="error-message">{errors.confirmPassword}</p>
                 )}
+                {errors.password && (
+                  <p className="error-message">{errors.password}</p>
+                )}
               </div>
             )}
 
@@ -282,6 +288,7 @@ export default function AuthPage() {
             )}
 
             {/* Кнопка отправки */}
+            
             <button
               type="submit"
               disabled={!isFormValid() || isLoading}

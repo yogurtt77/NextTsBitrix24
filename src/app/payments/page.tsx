@@ -187,7 +187,7 @@ export default function PaymentsPage() {
       
       <main className="payments-main">
         {/* Заголовок */}
-        <div className="payments-header">
+        <div className="payments-header" style={{ padding: '32px' }}>
           <h1 className="payments-title">Платежи</h1>
         </div>
 
@@ -197,19 +197,19 @@ export default function PaymentsPage() {
             <table className="payments-table">
               <thead className="payments-table-header">
                 <tr>
-                  <th className="table-header">
+                  <th className="payments-table-header-cell">
                     Номер счета
                   </th>
-                  <th className="table-header">
+                  <th className="payments-table-header-cell">
                     Дата
                   </th>
-                  <th className="table-header">
+                  <th className="payments-table-header-cell">
                     Сумма
                   </th>
-                  <th className="table-header">
+                  <th className="payments-table-header-cell">
                     Статус
                   </th>
-                  <th className="table-header">
+                  <th className="payments-table-header-cell">
                     Действие
                   </th>
                 </tr>
@@ -218,70 +218,45 @@ export default function PaymentsPage() {
                 {payments.map((payment) => (
                   <tr key={payment.id} className="payments-table-row">
                     {/* Номер счета */}
-                    <td className="table-cell">
+                    <td className="payments-table-cell">
                       {payment.accountNumber}
                     </td>
 
                     {/* Дата */}
-                    <td className="table-cell">
+                    <td className="payments-table-cell">
                       {payment.date}
                     </td>
 
                     {/* Сумма */}
-                    <td className="table-cell">
+                    <td className="payments-table-cell">
                       {payment.amount}
                     </td>
 
                     {/* Статус */}
-                    <td className="table-cell">
-                      <span className={`status-text ${payment.status}`}>
+                    <td className="payments-table-cell">
+                      <span className={`payments-status-text ${payment.status}`}>
                         {getStatusText(payment.status)}
                       </span>
                     </td>
 
                     {/* Действие */}
-                    <td className="table-cell">
+                    <td className="payments-table-cell">
                       {payment.status === 'unpaid' ? (
                         <button
                           onClick={() => handlePay(payment.id)}
                           disabled={isProcessing === payment.id}
-                          className={`pay-button ${isProcessing === payment.id ? 'processing' : ''}`}
+                          className="payments-pay-button"
                         >
                           {isProcessing === payment.id ? 'Обработка...' : 'Оплатить'}
                         </button>
                       ) : (
-                        <span className="no-action">—</span>
+                        <span className="payments-no-action">—</span>
                       )}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </div>
-        </div>
-
-        {/* Информация о платежах */}
-        <div className="payments-info">
-          <div className="info-content">
-            <div className="info-icon">
-              <div className="info-emoji">ℹ️</div>
-            </div>
-            <div className="info-text">
-              <h3 className="info-title">
-                Информация о платежах
-              </h3>
-              <div className="info-description">
-                <p>
-                  • Статус "Оплачено" означает, что сделка находится на стадии "В работе" или выше
-                </p>
-                <p>
-                  • Кнопка "Оплатить" переводит сделку в стадию "В работе" в Битрикс24
-                </p>
-                <p>
-                  • Данные синхронизируются с CRM системой Битрикс24
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </main>

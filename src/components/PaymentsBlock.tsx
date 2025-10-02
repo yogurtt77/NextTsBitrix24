@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface Payment {
   id: string;
@@ -15,35 +15,14 @@ interface Payment {
   stageSemanticId?: string;
 }
 
-const mockPayments: Payment[] = [
-  {
-    id: '1',
-    employee: 'Имя',
-    email: 'Почта@jourrapide.com',
-    status: 'unpaid',
-    completed: 96
-  },
-  {
-    id: '2',
-    employee: 'Gregory Davis A',
-    email: 'gregorydavis@dayrep.com',
-    status: 'paid',
-    completed: 73
-  },
-  {
-    id: '3',
-    employee: 'Gregory Davis A',
-    email: 'gregorydavis@dayrep.com',
-    status: 'paid',
-    completed: 73
-  }
-];
 
 export default function PaymentsBlock() {
   const [selectedPeriod, setSelectedPeriod] = useState('week');
   const [payments, setPayments] = useState<Payment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const periodOptions = [
     { value: 'week', label: 'Все платежи за последнюю неделю' },
@@ -67,8 +46,6 @@ export default function PaymentsBlock() {
     } catch (error) {
       console.error('Ошибка загрузки платежей:', error);
       setError('Ошибка загрузки данных из Битрикс24');
-      // В случае ошибки используем моковые данные
-      setPayments(mockPayments);
     } finally {
       setIsLoading(false);
     }
@@ -78,12 +55,35 @@ export default function PaymentsBlock() {
     loadPayments();
   }, []);
 
+  // Закрытие выпадающего списка при клике вне его
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const getStatusColor = (status: string) => {
     return status === 'paid' ? 'bg-green-500' : 'bg-red-500';
   };
 
   const getStatusText = (status: string) => {
     return status === 'paid' ? 'Оплачено' : 'Не оплачено';
+  };
+
+  const handlePeriodSelect = (value: string) => {
+    setSelectedPeriod(value);
+    setIsDropdownOpen(false);
+  };
+
+  const getSelectedPeriodLabel = () => {
+    return periodOptions.find(option => option.value === selectedPeriod)?.label || '';
   };
 
   return (
@@ -96,17 +96,45 @@ export default function PaymentsBlock() {
           </div>
         </div>
         
-        <select
-          value={selectedPeriod}
-          onChange={(e) => setSelectedPeriod(e.target.value)}
-          className="period-select"
-        >
-          {periodOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+        <div className="custom-dropdown" ref={dropdownRef}>
+          <button
+            type="button"
+            className="dropdown-trigger"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          >
+            <span className="dropdown-text">{getSelectedPeriodLabel()}</span>
+            <svg 
+              className={`dropdown-arrow ${isDropdownOpen ? 'open' : ''}`}
+              width="12" 
+              height="8" 
+              viewBox="0 0 12 8" 
+              fill="none"
+            >
+              <path 
+                d="M1 1.5L6 6.5L11 1.5" 
+                stroke="#6B7280" 
+                strokeWidth="1.5" 
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+          
+          {isDropdownOpen && (
+            <div className="dropdown-menu">
+              {periodOptions.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  className={`dropdown-item ${selectedPeriod === option.value ? 'selected' : ''}`}
+                  onClick={() => handlePeriodSelect(option.value)}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Таблица платежей */}
@@ -139,7 +167,7 @@ export default function PaymentsBlock() {
                   <td className="table-cell">
                     <div className="employee-info">
                       <div className="employee-avatar">
-                        <span className="employee-icon">👤</span>
+                        <img className="employee-img" src={'/paymentsavatar.svg'} />
                       </div>
                       <div className="employee-details">
                         <div className="employee-name">{payment.employee}</div>
@@ -155,7 +183,7 @@ export default function PaymentsBlock() {
                       <span className="status-text">{getStatusText(payment.status)}</span>
                     </div>
                   </td>
-
+     
                   {/* Выполнено */}
                   <td className="table-cell">
                     <div className="progress-container">

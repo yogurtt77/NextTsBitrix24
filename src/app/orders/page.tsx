@@ -172,26 +172,6 @@ export default function OrdersPage() {
           ))}
         </div>
 
-        {/* Пагинация (если нужно) */}
-        <div className="pagination">
-          <div className="pagination-buttons">
-            <button className="pagination-button">
-              Предыдущая
-            </button>
-            <button className="pagination-button active">
-              1
-            </button>
-            <button className="pagination-button">
-              2
-            </button>
-            <button className="pagination-button">
-              3
-            </button>
-            <button className="pagination-button">
-              Следующая
-            </button>
-          </div>
-        </div>
       </main>
     </div>
   );

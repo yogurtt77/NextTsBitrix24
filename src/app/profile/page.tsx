@@ -64,6 +64,8 @@ export default function ProfilePage() {
 
     if (!formData.name.trim()) {
       newErrors.name = 'Неправильное поле ввода';
+    } else if (formData.name.includes(' ')) {
+      newErrors.name = 'Неправильное поле ввода';
     }
 
     setErrors(newErrors);
@@ -128,7 +130,7 @@ export default function ProfilePage() {
             {/* Левая часть - Аватар */}
             <div className="profile-avatar-section">
               <div className="profile-avatar-large">
-                <span className="profile-avatar-icon">👤</span>
+                <img className="profile-avatar-img" src="/profilepageavatar.svg" alt="Avatar" />
               </div>
             </div>
 
@@ -140,21 +142,14 @@ export default function ProfilePage() {
                   <label className="profile-form-label">
                     Имя
                   </label>
-                  <div className="profile-input-container">
-                    <input
-                      type="text"
-                      value={formData.name}
-                      onChange={(e) => handleInputChange('name', e.target.value)}
-                      disabled={!isEditing}
-                      className={`profile-form-input ${errors.name ? 'error' : ''} ${isEditing ? 'editable' : 'disabled'}`}
-                      placeholder="Введите имя"
-                    />
-                    {errors.name && (
-                      <div className="profile-error-indicator">
-                        <div className="profile-error-icon">!</div>
-                      </div>
-                    )}
-                  </div>
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => handleInputChange('name', e.target.value)}
+                    disabled={!isEditing}
+                    className={`profile-form-input ${errors.name ? 'error' : ''} ${isEditing ? 'editable' : 'disabled'}`}
+                    placeholder="Телефон"
+                  />
                   {errors.name && (
                     <p className="profile-error-message">{errors.name}</p>
                   )}
@@ -170,6 +165,7 @@ export default function ProfilePage() {
                     value={formData.email}
                     disabled
                     className="profile-form-input disabled"
+                    placeholder="Телефон"
                   />
                 </div>
 
@@ -184,7 +180,7 @@ export default function ProfilePage() {
                     onChange={(e) => handleInputChange('phone', e.target.value)}
                     disabled={!isEditing}
                     className={`profile-form-input ${isEditing ? 'editable' : 'disabled'}`}
-                    placeholder="+7 (___) ___-__-__"
+                    placeholder="+7 (123) 420 __ - __"
                   />
                 </div>
 
@@ -199,7 +195,7 @@ export default function ProfilePage() {
                     onChange={(e) => handleInputChange('address', e.target.value)}
                     disabled={!isEditing}
                     className={`profile-form-input ${isEditing ? 'editable' : 'disabled'}`}
-                    placeholder="Введите адрес"
+                    placeholder="Телефон"
                   />
                 </div>
 
@@ -213,9 +209,9 @@ export default function ProfilePage() {
                 {/* Кнопка редактирования/сохранения */}
                 <button
                   onClick={isEditing ? handleSave : () => setIsEditing(true)}
-                  className={`profile-save-button ${isEditing ? 'save' : 'edit'}`}
+                  className="profile-save-button"
                 >
-                  {isEditing ? 'Сохранить' : 'Редактировать'}
+                  Редактировать
                 </button>
               </div>
             </div>

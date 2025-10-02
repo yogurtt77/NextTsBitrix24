@@ -117,19 +117,20 @@ export class BitrixAPI {
     
     console.log('Доступные стадии:', stages);
     
-    // Находим стадию "В работе" (обычно это "PREPARATION" или содержит "работа")
+    // Находим стадию "В работе" (EXECUTING или содержит "работа")
     const workStage = stages.find(stage => 
-      stage.VALUE === 'PREPARATION' || 
+      stage.VALUE === 'EXECUTING' || 
+      stage.VALUE.includes('EXECUTING') ||
       stage.VALUE.includes('работа') ||
       stage.VALUE.includes('WORK') ||
       stage.VALUE.includes('В работе')
     );
     
     if (!workStage) {
-      // Если не найдена стадия "В работе", используем PREPARATION как fallback
-      console.log('Стадия "В работе" не найдена, используем PREPARATION');
+      // Если не найдена стадия "В работе", используем EXECUTING как fallback
+      console.log('Стадия "В работе" не найдена, используем EXECUTING');
       return this.updateDeal(dealId, {
-        STAGE_ID: 'PREPARATION'
+        STAGE_ID: 'EXECUTING'
       });
     }
     

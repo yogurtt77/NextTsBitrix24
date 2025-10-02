@@ -82,12 +82,12 @@ export default function DashboardPage() {
 
           {/* Нижний ряд */}
           <div className="dashboard-row">
-            {/* Трансляция - левая часть (широкая) */}
+            {/* Трансляция - левая часть (узкая) */}
             <div className="broadcast-section">
               <BroadcastBlock />
             </div>
             
-            {/* Платежи - правая часть (узкая) */}
+            {/* Платежи - правая часть (широкая) */}
             <div className="payments-section">
               <PaymentsBlock />
             </div>

@@ -1,10 +1,9 @@
 'use client';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Pagination } from 'swiper/modules';
 import Image from 'next/image';
 import 'swiper/css';
-import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 interface OrderCard {
@@ -63,11 +62,19 @@ export default function OrdersSlider() {
 
       {/* Слайдер */}
       <Swiper
-        modules={[Navigation, Pagination]}
-        spaceBetween={20}
+        modules={[Pagination]}
+        spaceBetween={8}
         slidesPerView={4}
-        navigation
         pagination={{ clickable: true }}
+        grabCursor={true}
+        mousewheel={{
+          forceToAxis: true,
+          sensitivity: 1,
+          releaseOnEdges: true
+        }}
+        touchRatio={1}
+        touchAngle={45}
+        threshold={5}
         breakpoints={{
           320: {
             slidesPerView: 1,
@@ -91,25 +98,28 @@ export default function OrdersSlider() {
         {mockOrders.map((order) => (
           <SwiperSlide key={order.id}>
             <div className="order-item">
-              {/* Изображение документа */}
-              <div className="order-image">
-                <Image
-                  src={order.image}
-                  alt={order.title}
-                  width={200}
-                  height={150}
-                  className="order-image-content"
-                />
+              {/* Контент карточки */}
+              <div className="order-content">
+                {/* Изображение документа */}
+                <div className="order-image">
+                  <Image
+                    src={order.image}
+                    alt={order.title}
+                    width={180}
+                    height={170}
+                    className="order-image-content"
+                  />
+                </div>
+                
+                {/* Название */}
+                <h3 className="order-title">
+                  {order.title}
+                </h3>
               </div>
               
-              {/* Название */}
-              <h3 className="order-title">
-                {order.title}
-              </h3>
-              
-              {/* Кнопка скачивания */}
+              {/* Кнопка скачивания - всегда внизу */}
               <button className="download-button">
-                <span className="download-icon">📥</span>
+                <img src="/download.svg" alt="Download" className="download-icon" />
                 <span className="download-text">Скачать</span>
               </button>
             </div>
